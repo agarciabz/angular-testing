@@ -6,7 +6,6 @@ import {LoggerService} from './logger.service';
 })
 export class CalculatorService {
 
-
   constructor(private logger: LoggerService) {
 
   }
@@ -22,4 +21,3 @@ export class CalculatorService {
   }
 
 }
-
