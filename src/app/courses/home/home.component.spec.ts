@@ -56,7 +56,6 @@ describe('HomeComponent', () => {
 
   it("should display only beginner courses", () => {
     (coursesService.findAllCourses as jasmine.Spy).and.returnValue(of(beginnersCourses));
-    
     fixture.detectChanges();
     const tabs = el.queryAll(By.css('.mat-tab-label'));
 
@@ -65,7 +64,6 @@ describe('HomeComponent', () => {
 
   it("should display only advanced courses", () => {
     (coursesService.findAllCourses as jasmine.Spy).and.returnValue(of(advancedCourses));
-    
     fixture.detectChanges();
     const tabs = el.queryAll(By.css('.mat-tab-label'));
 
@@ -74,7 +72,6 @@ describe('HomeComponent', () => {
 
   it("should display both tabs", () => {
     (coursesService.findAllCourses as jasmine.Spy).and.returnValue(of(setupCourses()));
-    
     fixture.detectChanges();
     const tabs = el.queryAll(By.css('.mat-tab-label'));
 
@@ -82,9 +79,15 @@ describe('HomeComponent', () => {
   });
 
   it("should display advanced courses when tab clicked", () => {
+    (coursesService.findAllCourses as jasmine.Spy).and.returnValue(of(setupCourses()));
+    fixture.detectChanges();
+    const tabs = el.queryAll(By.css('.mat-tab-label'));
+    click(tabs[1]);
+    fixture.detectChanges();
+    const cardTitles = el.queryAll(By.css('.mat-card-title'));
 
-    pending();
-
+    expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card title');
+    expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
   });
 
 });
