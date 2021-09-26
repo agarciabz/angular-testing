@@ -49,9 +49,7 @@ describe('HomeComponent', () => {
   }));
 
   it("should create the component", () => {
-
     expect(component).toBeTruthy();
-
   });
 
   it("should display only beginner courses", () => {
@@ -78,16 +76,19 @@ describe('HomeComponent', () => {
     expect(tabs.length).toBe(2, 'Expected to find 2 tabs');
   });
 
-  it("should display advanced courses when tab clicked", () => {
+  it("should display advanced courses when tab clicked", (done: DoneFn) => {
     (coursesService.findAllCourses as jasmine.Spy).and.returnValue(of(setupCourses()));
     fixture.detectChanges();
     const tabs = el.queryAll(By.css('.mat-tab-label'));
     click(tabs[1]);
     fixture.detectChanges();
-    const cardTitles = el.queryAll(By.css('.mat-card-title'));
 
-    expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card title');
-    expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
+    setTimeout(() => {
+      const cardTitles = el.queryAll(By.css('.mat-tab-body-active .mat-card-title'));
+      expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card title');
+      expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
+      done();
+    }, 500);
   });
 
 });
