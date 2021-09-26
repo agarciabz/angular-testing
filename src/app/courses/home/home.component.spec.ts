@@ -12,12 +12,16 @@ import {By} from '@angular/platform-browser';
 import {of} from 'rxjs';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {click} from '../common/test-utils';
+import { filter } from 'cypress/types/bluebird';
 
 describe('HomeComponent', () => {
 
   let fixture: ComponentFixture<HomeComponent>;
   let component:HomeComponent;
   let el: DebugElement;
+  let coursesService: CoursesService;
+
+  const beginnersCourses = setupCourses().filter(course => course.category === 'BEGINNER');
 
   beforeEach(waitForAsync(() => {
     const coursesServiceSpy = jasmine.createSpyObj('CoursesService', ['findAllCourses']);
@@ -39,6 +43,7 @@ describe('HomeComponent', () => {
         fixture = TestBed.createComponent(HomeComponent);
         component = fixture.componentInstance;
         el = fixture.debugElement;
+        coursesService = TestBed.inject(CoursesService);
       })
   }));
 
@@ -49,9 +54,12 @@ describe('HomeComponent', () => {
   });
 
   it("should display only beginner courses", () => {
+    (coursesService.findAllCourses as jasmine.Spy).and.returnValue(of(beginnersCourses));
+    
+    fixture.detectChanges();
+    const tabs = el.queryAll(By.css('.mat-tab-label'));
 
-    pending();
-
+    expect(tabs.length).toBe(1, 'Unexpected number of tabs found');
   });
 
   it("should display only advanced courses", () => {
