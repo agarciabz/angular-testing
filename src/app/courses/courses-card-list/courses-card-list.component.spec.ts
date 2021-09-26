@@ -8,32 +8,25 @@ import {sortCoursesBySeqNo} from '../home/sort-course-by-seq';
 import {Course} from '../model/course';
 import {setupCourses} from '../common/setup-test-data';
 
-
-
-
 describe('CoursesCardListComponent', () => {
 
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [CoursesModule]
+    });
+  });
 
   it("should create the component", () => {
-
    pending();
-
   });
-
 
   it("should display the course list", () => {
-
     pending();
-
   });
-
 
   it("should display the first course", () => {
-
       pending();
-
   });
-
 
 });
 
