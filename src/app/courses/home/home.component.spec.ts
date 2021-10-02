@@ -89,7 +89,7 @@ describe('HomeComponent', () => {
   }));
 
   // Async would be needed when testing actual HTTP requests
-  fit('should display advanced courses when tab clicked - waitForAsync', waitForAsync(() => {
+  it('should display advanced courses when tab clicked - waitForAsync', waitForAsync(() => {
     (coursesService.findAllCourses as jasmine.Spy).and.returnValue(of(setupCourses()));
     fixture.detectChanges();
     const tabs = el.queryAll(By.css('.mat-tab-label'));
