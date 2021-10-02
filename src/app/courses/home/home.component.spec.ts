@@ -12,12 +12,11 @@ import {By} from '@angular/platform-browser';
 import {of} from 'rxjs';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {click} from '../common/test-utils';
-import { filter } from 'cypress/types/bluebird';
 
 describe('HomeComponent', () => {
 
   let fixture: ComponentFixture<HomeComponent>;
-  let component:HomeComponent;
+  let component: HomeComponent;
   let el: DebugElement;
   let coursesService: CoursesService;
 
@@ -76,19 +75,20 @@ describe('HomeComponent', () => {
     expect(tabs.length).toBe(2, 'Expected to find 2 tabs');
   });
 
-  it("should display advanced courses when tab clicked", (done: DoneFn) => {
+  it("should display advanced courses when tab clicked", fakeAsync((done: DoneFn) => {
     (coursesService.findAllCourses as jasmine.Spy).and.returnValue(of(setupCourses()));
     fixture.detectChanges();
     const tabs = el.queryAll(By.css('.mat-tab-label'));
     click(tabs[1]);
     fixture.detectChanges();
+    // This is needed because animations are asynchronous
+    // Also is not a microtask
+    // Could be replaced by tick(16): takes 16 ms for animation frame
+    flush();
 
-    setTimeout(() => {
-      const cardTitles = el.queryAll(By.css('.mat-tab-body-active .mat-card-title'));
-      expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card title');
-      expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
-      done();
-    }, 500);
-  });
+    const cardTitles = el.queryAll(By.css('.mat-tab-body-active .mat-card-title'));
+    expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card title');
+    expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
+  }));
 
 });

@@ -64,7 +64,7 @@ describe('Async Testing Examples', () => {
     expect(counter).toBe(11);
   }));
 
-  fit('Asynchronous test example - Observables', fakeAsync(() => {
+  it('Asynchronous test example - Observables', fakeAsync(() => {
     let test = false;
     console.log('Creating Observable');
     // With no delay, fakeAsync wouldn't be necessary
